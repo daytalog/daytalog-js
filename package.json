@@ -1,0 +1,87 @@
+{
+  "name": "daytalog",
+  "version": "1.0.0",
+  "description": "A React library for managing and displaying daytalog data",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./parse": {
+      "import": "./dist/esm/parse.js",
+      "require": "./dist/cjs/parse.js",
+      "types": "./dist/parse.d.ts"
+    },
+    "./typegen": {
+      "import": "./dist/esm/typegen.js",
+      "require": "./dist/cjs/typegen.js",
+      "types": "./dist/typegen.d.ts"
+    }
+  },
+  "bin": {
+    "daytalog": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "npm run build:clean && rollup -c",
+    "build:clean": "rimraf dist",
+    "build:types": "rollup -c --configPlugin typescript",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prepare": "npm run build",
+    "postinstall": "chmod +x dist/cli.js"
+  },
+  "peerDependencies": {
+    "react": ">=19.1.0"
+  },
+  "dependencies": {
+    "yaml": "^2.3.4",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.5",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.1.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "rollup": "^4.43.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-dts": "^6.2.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-preserve-shebang": "^1.0.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "react",
+    "daytalog",
+    "logging",
+    "data-management"
+  ],
+  "author": "Philip Bengtsson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daytalog/daytalog-js"
+  },
+  "bugs": {
+    "url": "https://github.com/daytalog/daytalog-js/issues"
+  },
+  "homepage": "https://daytalog.com"
+}
