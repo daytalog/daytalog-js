@@ -267,7 +267,9 @@ interface Clip {
   proxy: Proxy;
 }
 
-interface Custom {}
+interface Custom {
+  [key: string]: unknown;
+}
 
 export type Log = {
   /** The unique identifier for this log. */
@@ -754,7 +756,7 @@ export type Log = {
       count: [number, number];
     }[];
   };
-  custom: Custom;
+  custom: Custom | undefined;
 };
 
 export type Daytalog = {
