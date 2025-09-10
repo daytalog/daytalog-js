@@ -17,7 +17,7 @@ const command = args[0];
 
 const REQUIRED_PACKAGES = {
   typescript: "^5.0.0",
-  daytalog: "^0.1.0",
+  daytalog: "^1.0.0",
 } as const;
 
 function detectPackageManager(): "npm" | "yarn" | "pnpm" {
@@ -261,11 +261,12 @@ async function generateTypeDef() {
     project = await parseProject(configPath);
   }
 
-  const { Clip } = createTypeDefinition(project);
+  const { Clip, Custom } = createTypeDefinition(project);
 
   const decl =
     `import "daytalog" \n declare module "daytalog" {\n` +
     `interface Clip ${Clip}\n` +
+    `interface Custom ${Custom}\n` +
     `}`;
 
   fs.writeFileSync(outFile, decl);
@@ -323,6 +324,37 @@ async function loadData() {
   }
 }
 
+function printHelp() {
+  console.log(`
+Daytalog CLI
+
+Usage:
+  daytalog <command>
+
+Commands:
+  init    Set up a Daytalog project in the current workspace:
+          - Ensures TypeScript is installed (prompts if missing)
+          - Ensures 'daytalog' dependency is present
+          - Adds recommended scripts to package.json
+          - Creates 'daytalog/project' with 'logs' directory
+          - Optionally installs a sample project (config + sample log)
+          - Updates/creates tsconfig.json with generated types path
+
+  start   Runs the local workflow:
+          - Generates TypeScript declaration file at 'daytalog/generated/types.d.ts'
+          - Loads project and logs and writes 'daytalog/generated/data.ts'
+          - Requires 'daytalog/project/config.yaml' and '.dayta' logs in 'daytalog/project/logs'
+
+Options:
+  -h, --help   Show this help message
+
+Examples:
+  daytalog init
+  daytalog start
+  daytalog --help
+`);
+}
+
 // Main CLI handler
 async function main() {
   try {
@@ -333,8 +365,13 @@ async function main() {
       case "start":
         await start();
         break;
+      case "help":
+      case "-h":
+      case "--help":
+        printHelp();
+        break;
       default:
-        console.log("Usage: daytalog <init|typegen|generate|dev>");
+        printHelp();
         break;
     }
   } catch (error) {

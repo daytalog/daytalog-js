@@ -98,7 +98,7 @@ export async function createDaytalog(props: DaytalogProps): Promise<Daytalog> {
   } else {
     if (Array.isArray(selection)) {
       // Merge the selected logs
-      console.log("multiple, will merge");
+      //console.log("multiple, will merge");
       const mergedData = await mergeLogs(selection, options);
       log = await createLog(mergedData, options);
       const logsToSet = selection.map((s) => {
@@ -111,7 +111,7 @@ export async function createDaytalog(props: DaytalogProps): Promise<Daytalog> {
       }
       selectedLogs = logsToSet;
     } else {
-      console.log("is one log");
+      //console.log("is one log");
       const logToSet = logMap.get(selection.id);
       if (!logToSet) throw new Error("Selected log could not be found");
       log = logToSet;

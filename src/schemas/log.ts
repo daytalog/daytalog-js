@@ -315,3 +315,26 @@ export const ClipDynamicZod = (project: ProjectSchemaType) => {
       proxy: true,
     });
 };
+
+export const CustomLogFieldsDynamicZod = (project: ProjectSchemaType) => {
+  if (!project.custom_schemas) {
+    return z.object({});
+  }
+  const sortedSchemas = project.custom_schemas
+    .filter((schema) => schema.active)
+    .sort((a, b) => a.order - b.order);
+
+  if (sortedSchemas.length === 0) {
+    // No active custom schemas, return a safe empty schema
+    return z.object({});
+  }
+  // Merge all custom fields into a single shape
+  const customFields: Record<string, z.ZodType> = sortedSchemas.reduce(
+    (acc, schema) => ({
+      ...acc,
+      ...buildCustomFieldsSchema(schema.log_fields),
+    }),
+    {}
+  );
+  return z.object(customFields);
+};

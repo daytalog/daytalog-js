@@ -1,38 +1,24 @@
 import { ZodType } from "zod";
-//import { printNode, zodToTs } from "zod-to-ts";
 import {
   ClipDynamicZod,
   OcfClipZod,
   SoundClipZod,
   ProxyClipZod,
   LogDynamicZod,
+  CustomLogFieldsDynamicZod,
 } from "../schemas/log";
 import { ProjectSchemaType } from "../schemas/project";
 
-type ClipTypeName = "Log" | "Clip" | "OcfClip" | "SoundClip" | "ProxyClip";
+type ClipTypeName =
+  | "Log"
+  | "Clip"
+  | "OcfClip"
+  | "SoundClip"
+  | "ProxyClip"
+  | "Custom";
 type TypeDefinition = {
   [K in ClipTypeName]: string;
 };
-
-/*function transformAstString(astString: string, identifier: string): string {
-  return `${identifier === "Clip" ? `interface ${identifier} ` : ""}${astString
-    .replace(/\.\.\.args_\d+: unknown\[\]/g, "") // Remove variadic arguments
-    .replace(/,\s*,/g, ",") // Remove duplicate commas
-    .replace(/\(\s*,/g, "(") // Remove leading commas in parentheses
-    .replace(/,\s*\)/g, ")") // Remove trailing commas in parentheses
-    .replace(/\(args_0:/, "(options?:") // Rename args_0 to options?
-    .trim()}`;
-}
-
-const generateDynamicAST = (
-  identifier: ClipTypeName,
-  schema: ZodTypeAny
-): Pick<TypeDefinition, typeof identifier> => {
-  const { node } = zodToTs(schema, identifier);
-  return {
-    [identifier]: transformAstString(printNode(node), identifier),
-  } as Pick<TypeDefinition, typeof identifier>;
-};*/
 
 function schemaToType(schema: ZodType<any, any, any>): string {
   const def = (schema as any).def;
@@ -108,6 +94,7 @@ export const createTypeDefinition = (
   const clipTypes = [
     { name: "Log" as const, schema: LogDynamicZod(project) },
     { name: "Clip" as const, schema: ClipDynamicZod(project) },
+    { name: "Custom" as const, schema: CustomLogFieldsDynamicZod(project) },
     { name: "OcfClip" as const, schema: OcfClipZod },
     { name: "SoundClip" as const, schema: SoundClipZod },
     { name: "ProxyClip" as const, schema: ProxyClipZod },
