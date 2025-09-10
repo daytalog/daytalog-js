@@ -215,7 +215,7 @@ export function getCopies(
 type Context = "ocf" | "proxy" | "sound";
 
 export function getTotalFiles(data: Log[], context: Context): number {
-  const contextMap: Record<Context, keyof Log> = {
+  const contextMap: Record<Context, "ocf" | "proxy" | "sound"> = {
     ocf: "ocf",
     proxy: "proxy",
     sound: "sound",
@@ -243,7 +243,7 @@ export function getTotalSize<T extends FormatOutput>(
   context: Context,
   options?: FormatBytesOptions<T>
 ): number | string | [number, string] {
-  const contextMap: Record<Context, keyof Log> = {
+  const contextMap: Record<Context, "ocf" | "proxy" | "sound"> = {
     ocf: "ocf",
     proxy: "proxy",
     sound: "sound",
